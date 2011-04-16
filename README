@@ -16,8 +16,7 @@ Requirements:
         - POE
         - POE::Component::IRC
         - Redis
-    - A functioning Redis 2.2+ server bound to localhost and listening on the
-      default port
+    - A functioning Redis 2.2+ server.
 
 Requirements for running unit tests:
 
