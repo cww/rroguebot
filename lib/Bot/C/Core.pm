@@ -18,7 +18,7 @@ use common::sense;
 use base 'Class::Singleton';
 
 use Carp;
-use JSON::XS;
+use JSON;
 use List::MoreUtils qw(any);
 use LWP::UserAgent;
 use POE;
@@ -50,8 +50,8 @@ sub _ev_tick
     my $r = $ua->get('http://www.reddit.com/r/roguelikes/new/.json');
     if ($r->is_success)
     {
-        my $json = $r->decoded_content;
-        my $data = decode_json($json);
+        my $json = JSON->new();
+        my $data = $json->decode($r->decoded_content);
 
         my @links;
         $@ = q{};

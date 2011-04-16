@@ -19,17 +19,9 @@ use common::sense;
 use base 'Class::Singleton';
 
 use Carp;
-use JSON::XS;
+use JSON;
 
 use Bot::V::Log;
-
-sub _new_instance
-{
-    my $class = shift;
-    my $self = bless {}, $class;
-
-    return $self;
-}
 
 =head1 METHODS
 
@@ -46,19 +38,17 @@ sub parse_config
 {
     my ($self, $file) = @_;
 
-    return undef unless $file && -r $file;
-
-    my $fh;
-    open($fh, '<', $file) || return undef;
+    my $fh = IO::File->new($file, '<') or return undef;
     my $buf;
     my $num_read_total = 0;
-    while (my $num_read_cur = read($fh, $buf, 4096, $num_read_total))
+    while (my $num_read_cur = $fh->read($buf, 4096, $num_read_total))
     {
         $num_read_total += $num_read_cur;
     }
-    close($fh);
+    $fh->close();
 
-    $self->{config} = decode_json($buf);
+    my $json = JSON->new();
+    $self->{config} = $json->decode($buf);
 
     if ($self->{config})
     {

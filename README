@@ -12,11 +12,18 @@ Requirements:
 
     - Non-core Perl modules
         - common::sense
+        - JSON
         - POE
         - POE::Component::IRC
         - Redis
     - A functioning Redis 2.2+ server bound to localhost and listening on the
       default port
+
+Requirements for running unit tests:
+
+    - Non-core Perl modules
+        - Test::MockObject
+        - Test::Most
 
 This bot is free software.  See the COPYING file included in this distribution
 for licensing terms.
