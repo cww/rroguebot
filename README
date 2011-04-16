@@ -2,3 +2,23 @@ These are the guts of the Sophos IRC bot that lives on #rrogue on the Freenode
 IRC network.  The #rrogue channel is affiliated with the /r/roguelikes
 community on Reddit <http://www.reddit.com/r/roguelikes/>.
 
+For information about running the bot, run:
+
+    perldoc -F bin/rroguebot.pl
+
+A sample configuration file may be found in the examples/ directory.
+
+Requirements:
+
+    - Non-core Perl modules
+        - common::sense
+        - POE
+        - POE::Component::IRC
+        - Redis
+    - A functioning Redis 2.2+ server bound to localhost and listening on the
+      default port
+
+This bot is free software.  See the COPYING file included in this distribution
+for licensing terms.
+
+Copyright (c) 2011 Colin Wetherbee <cww@denterprises.org>

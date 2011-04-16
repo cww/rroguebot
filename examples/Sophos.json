@@ -1,0 +1,15 @@
+{
+    "irc_channels":
+    [
+        "#rrogue",
+        "##sophos"
+    ],
+    "irc_nick": "SophosClone",
+    "irc_nickserv_password": "some_password",
+    "irc_username": "SophosClone",
+    "irc_ircname": "/r/roguelikes bot for #rrogue",
+    "irc_server": "calvino.freenode.net",
+    "irc_port": 6667,
+    "redis_host": "localhost",
+    "redis_port": 6379
+}
