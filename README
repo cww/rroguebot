@@ -12,6 +12,7 @@ Requirements:
 
     - Perl 5.10+
     - Non-core Perl modules
+        - Class::Singleton 1.4+
         - common::sense 3.4+
         - JSON 2.51+
         - List::MoreUtils 0.30+
