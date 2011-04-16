@@ -46,7 +46,11 @@ sub _get_redis
 
     if (!$self->{redis} || !$self->{redis}->ping())
     {
-        $self->{redis} = Redis->new();
+        my $server = Bot::M::Config->instance()->get_key('redis_host') ||
+                     'localhost';
+        my $port = Bot::M::Config->instance()->get_key('redis_port') ||
+                   '6379';
+        $self->{redis} = Redis->new("$server:$port");
     }
 
     return $self->{redis};
