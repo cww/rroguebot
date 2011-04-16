@@ -40,17 +40,21 @@ use Redis;
 
 use Bot::V::Log;
 
+use constant REDIS_DEF_SERVER => 'localhost';
+use constant REDIS_DEF_PORT   => '6379';
+
 sub _get_redis
 {
     my ($self) = @_;
 
     if (!$self->{redis} || !$self->{redis}->ping())
     {
-        my $server = Bot::M::Config->instance()->get_key('redis_host') ||
-                     'localhost';
-        my $port = Bot::M::Config->instance()->get_key('redis_port') ||
-                   '6379';
-        $self->{redis} = Redis->new("$server:$port");
+        my $config = Bot::M::Config->instance();
+        return undef unless $config;
+
+        my $server = $config->get_key('redis_host') || REDIS_DEF_SERVER;
+        my $port = $config->get_key('redis_port') || REDIS_DEF_PORT;
+        $self->{redis} = Redis->new(server => "$server:$port");
     }
 
     return $self->{redis};
