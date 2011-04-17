@@ -4,6 +4,19 @@
         "#rrogue",
         "##sophos"
     ],
+    "proxies":
+    [
+        {
+            "prefix": "??",
+            "nick": "Proxy1",
+            "target_channel": "#foo"
+        },
+        {
+            "prefix": "?@",
+            "nick": "Proxy2",
+            "target_channel": "#foo"
+        }
+    ],
     "irc_nick": "SophosClone",
     "irc_nickserv_password": "some_password",
     "irc_username": "SophosClone",

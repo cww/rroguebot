@@ -19,7 +19,6 @@ use base 'Class::Singleton';
 
 use Carp;
 use JSON;
-use List::MoreUtils qw(any);
 use LWP::UserAgent;
 use POE;
 use POE::Component::IRC;
@@ -158,15 +157,7 @@ sub _ev_on_public
     my $config = Bot::M::Config->instance();
     my $nick = $config->get_key('irc_nick');
 
-    # Query proxy to Henzell.
-    if ($msg =~ /^\?\?/)
-    {
-        my $target = 'Henzell';
-        Bot::V::Log->instance()->log("MSG_OUT(${target}) $msg");
-        Bot::V::IRC->instance()->privmsg($target, $msg);
-    }
-    # Learn a key/value pair using "nick, foo = bar" or @learn@.
-    elsif ($msg =~ /^${nick}[,:]\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i ||
+    if ($msg =~ /^${nick}[,:]\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i ||
            $msg =~ /^\@learn\@\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i)
     {
         my ($raw_key, $raw_value) = ($1, $2);
@@ -223,6 +214,18 @@ sub _ev_on_public
             );
         }
     }
+
+    my $proxies_ref = Bot::M::Config->instance()->get_key('proxies');
+    for my $proxy_ref (@$proxies_ref)
+    {
+        my $re = $proxy_ref->{prefix};
+        if ($msg =~ /^$re/)
+        {
+            my $target = $proxy_ref->{nick};
+            Bot::V::Log->instance()->log("MSG_OUT($target) $msg");
+            Bot::V::IRC->instance()->privmsg($target, $msg);
+        }
+    }
 }
 
 sub _ev_on_msg
@@ -234,9 +237,14 @@ sub _ev_on_msg
 
     Bot::V::Log->instance()->log("MSG_IN($nick) $msg");
 
-    if (any { $nick eq $_ } qw(Henzell))
+    my $proxies_ref = Bot::M::Config->instance()->get_key('proxies');
+    for my $proxy_ref (@$proxies_ref)
     {
-        Bot::V::IRC->instance()->privmsg('#rrogue', "<$nick> $msg");
+        if (lc($nick) eq lc($proxy_ref->{nick}))
+        {
+            my $channel = $proxy_ref->{target_channel};
+            Bot::V::IRC->instance()->privmsg($channel, "<$nick> $msg");
+        }
     }
 }
 
