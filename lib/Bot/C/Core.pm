@@ -24,81 +24,37 @@ use POE;
 use POE::Component::IRC;
 use Time::HiRes qw(time);
 
+use Bot::M::Config;
+use Bot::M::DB;
+use Bot::M::Reddit;
 use Bot::V::IRC;
+use Bot::V::Log;
 
-sub _new_instance
-{
-    my $class = shift;
-    my $self = bless {}, $class;
-
-    return $self;
-}
-
-# XXX Most of the logic in here needs to move somewhere else.
 sub _ev_tick
 {   
     my ($self) = @_[OBJECT];
 
-    Bot::V::Log->instance()->log
-    (
-        'Checking Reddit for new /r/roguelikes posts'
-    );
+    my $subreddits_ref = Bot::M::Config->instance()->get_key('subreddits');
 
-    my $ua = LWP::UserAgent->new();
-    $ua->timeout(4);
-    my $r = $ua->get('http://www.reddit.com/r/roguelikes/new/.json');
-    if ($r->is_success)
+    # For each subreddit specifier, check for new posts and, if no error
+    # occurred during that check, iterate over the list of returned messages
+    # and send them directly to the appropriate channel.
+    for my $subreddit_ref (@$subreddits_ref)
     {
-        my $json = JSON->new();
-        my $data = $json->decode($r->decoded_content);
+        my $subreddit_name = $subreddit_ref->{subreddit};
+        my $channel = $subreddit_ref->{target_channel};
 
-        my @links;
-        $@ = q{};
-        eval
+        Bot::V::Log->instance()->log("Checking new [$subreddit_name] posts.");
+        my $msgs_ref = Bot::M::Reddit->instance()->get_msgs($subreddit_name);
+
+        if (defined($msgs_ref))
         {
-            my $raw_links_ref = $data->{data}->{children};
-            for my $link_ref (@$raw_links_ref)
+            for my $msg (@$msgs_ref)
             {
-                my $id = $link_ref->{data}->{id};
-                next unless defined($id) && $id =~ /^\w+$/;
-
-                my $db = Bot::M::DB->instance();
-                next if $db->have_seen('reddit', $id);
-
-                my %link = map
-                {
-                    $_ => $link_ref->{data}->{$_}
-                } qw(id author title);
-
-                $link{_url} = "http://redd.it/$link{id}";
-
-                push(@links, \%link);
-
-                $db->add_seen('reddit', $id);
-            }
-        };
-
-        if ($@)
-        {
-            Bot::V::Log->instance()->log("Unable to parse Reddit JSON: $@");
-        }
-        else
-        {
-            for my $link_ref (@links)
-            {
-                Bot::V::Log->instance()->log
-                (
-                    "Saying Reddit link [$link_ref->{_url}]."
-                );
-                my $msg = "$link_ref->{author}: $link_ref->{title} " .
-                          "<$link_ref->{_url}>";
-                Bot::V::IRC->instance()->privmsg('#rrogue', $msg);
+                Bot::V::Log->instance()->log("REDDIT_OUT($channel, $msg)");
+                Bot::V::IRC->instance()->privmsg($channel, $msg);
             }
         }
-    }
-    else
-    {
-        Bot::V::Log->instance()->log('Reddit request did not succeed');
     }
 
     $_[HEAP]->{next_alarm_time} = int(time() + 300 + rand(120));

@@ -17,6 +17,13 @@
             "target_channel": "#foo"
         }
     ],
+    "subreddits":
+    [
+        {
+            "subreddit": "jokes",
+            "target_channel": "##hilarious"
+        }
+    ],
     "irc_nick": "SophosClone",
     "irc_nickserv_password": "some_password",
     "irc_username": "SophosClone",
