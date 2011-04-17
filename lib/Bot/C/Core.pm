@@ -60,7 +60,7 @@ sub _ev_tick
             for my $link_ref (@$raw_links_ref)
             {
                 my $id = $link_ref->{data}->{id};
-                next unless defined($id);
+                next unless defined($id) && $id =~ /^\w+$/;
 
                 my $db = Bot::M::DB->instance();
                 next if $db->have_seen('reddit', $id);
