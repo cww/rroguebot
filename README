@@ -25,6 +25,10 @@ Requirements for running unit tests:
         - Test::MockObject
         - Test::Most
 
+Running unit tests:
+
+    prove -Ilib t
+
 This bot is free software.  See the COPYING file included in this distribution
 for licensing terms.
 
