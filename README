@@ -15,7 +15,6 @@ Requirements:
         - Class::Singleton 1.4+
         - common::sense 3.4+
         - JSON 2.51+
-        - List::MoreUtils 0.30+
         - POE::Component::IRC 6.60+
         - Redis 1.904+
     - A functioning Redis 2.2+ server.
