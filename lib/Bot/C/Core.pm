@@ -218,8 +218,9 @@ sub _ev_on_public
     my $proxies_ref = Bot::M::Config->instance()->get_key('proxies');
     for my $proxy_ref (@$proxies_ref)
     {
-        my $re = $proxy_ref->{prefix};
-        if ($msg =~ /^$re/)
+        my $prefix = $proxy_ref->{prefix};
+        if (length($msg) >= length($prefix) &&
+            substr($msg, 0, length($prefix)) eq $prefix)
         {
             my $target = $proxy_ref->{nick};
             Bot::V::Log->instance()->log("MSG_OUT($target) $msg");
