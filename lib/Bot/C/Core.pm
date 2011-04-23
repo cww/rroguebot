@@ -114,7 +114,7 @@ sub _ev_on_public
     my $nick = $config->get_key('irc_nick');
 
     if ($msg =~ /^${nick}[,:]\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i ||
-           $msg =~ /^\@learn\@\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i)
+        $msg =~ /^\@learn\@\s*(\S.*?)\s*=\s*(\S.*?)\s*$/i)
     {
         my ($raw_key, $raw_value) = ($1, $2);
 
