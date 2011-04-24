@@ -59,6 +59,8 @@ sub _parse_args
     return \%args;
 }
 
+$| = 1;
+
 my $args_ref = _parse_args();
 
 my $config = Bot::M::Config->instance();
