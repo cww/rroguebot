@@ -25,7 +25,7 @@ sub get_msgs_no_subreddit
     my $m = Test::MockObject->new();
     $m->fake_module
     (
-        'JSON',
+        'JSON::PP',
         new => sub { bless {}, shift },
     );
     $m->fake_module
@@ -46,7 +46,7 @@ sub get_msgs_get_fail
     my $m = Test::MockObject->new();
     $m->fake_module
     (
-        'JSON',
+        'JSON::PP',
         new => sub { bless {}, shift },
     );
     $m->fake_module
@@ -74,7 +74,7 @@ sub get_msgs_http_error
         my $m = Test::MockObject->new();
         $m->fake_module
         (
-            'JSON',
+            'JSON::PP',
             new => sub { bless {}, shift },
         );
         $m->fake_module
@@ -109,7 +109,7 @@ sub get_msgs_success
         my $m = Test::MockObject->new();
         $m->fake_module
         (
-            'JSON',
+            'JSON::PP',
             new    => sub { bless {}, shift },
             decode => sub
             {

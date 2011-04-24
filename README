@@ -10,14 +10,14 @@ A sample configuration file may be found in the examples/ directory.
 
 Requirements:
 
-    - Perl 5.10+
+    - Perl 5.10.1+
     - Non-core Perl modules
         - Class::Singleton 1.4+
-        - common::sense 3.4+
-        - JSON 2.51+
-        - POE::Component::IRC 6.60+
+        - common::sense 3.3+
+        - JSON::PP 2.27104+
+        - POE::Component::IRC 6.35+
         - Redis 1.904+
-    - A functioning Redis 2.2+ server.
+    - A functioning Redis 2.2.4+ server.
 
 Requirements for running unit tests:
 

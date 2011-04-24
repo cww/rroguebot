@@ -19,7 +19,7 @@ use common::sense;
 use base 'Class::Singleton';
 
 use Carp;
-use JSON;
+use JSON::PP;
 
 use Bot::V::Log;
 
@@ -47,7 +47,7 @@ sub parse_config
     }
     $fh->close();
 
-    my $json = JSON->new();
+    my $json = JSON::PP->new();
     $self->{config} = $json->decode($buf);
 
     if ($self->{config})

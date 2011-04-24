@@ -48,7 +48,7 @@ sub parse_config_invalid_json
     );
     $m->fake_module
     (
-        'JSON',
+        'JSON::PP',
         new => sub { bless {}, shift },
         decode => sub { undef },
     );
@@ -72,7 +72,7 @@ sub parse_config_success
     );
     $m->fake_module
     (
-        'JSON',
+        'JSON::PP',
         new => sub { bless {}, shift },
         decode => sub { { foo => 'bar' } },
     );

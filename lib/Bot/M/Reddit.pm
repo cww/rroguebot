@@ -25,7 +25,7 @@ use common::sense;
 
 use base 'Class::Singleton';
 
-use JSON;
+use JSON::PP;
 use LWP::UserAgent;
 
 use Bot::M::DB;
@@ -35,7 +35,7 @@ sub _new_instance
 {
     my $ua = LWP::UserAgent->new();
     $ua->timeout(4);
-    my $json = JSON->new();
+    my $json = JSON::PP->new();
 
     my %self =
     (

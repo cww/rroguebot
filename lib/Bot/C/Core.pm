@@ -18,7 +18,6 @@ use common::sense;
 use base 'Class::Singleton';
 
 use Carp;
-use JSON;
 use LWP::UserAgent;
 use POE;
 use POE::Component::IRC;
